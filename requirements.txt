@@ -1,0 +1,17 @@
+pyannote.audio
+openai-whisper
+torchaudio
+torch
+python-Levenshtein
+pydu
+speechbrain
+silero-vad
+seaborn
+psycopg2
+spacy
+transformers
+statsmodels
+ipython
+datasets
+
+boto3
