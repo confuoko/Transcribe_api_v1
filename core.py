@@ -1,6 +1,5 @@
 
 import whisper
-
 from silero_vad import load_silero_vad, read_audio, get_speech_timestamps
 from speechbrain.pretrained import EncoderClassifier
 from sklearn.cluster import KMeans
@@ -11,7 +10,6 @@ import os
 from tempfile import NamedTemporaryFile
 
 
-FILE_NAME = "test_audio.mp3"
 BERT_MODEL_NAME = 'bert-base-multilingual-cased'
 TRANSCRIBE_MODEL_NAME = 'medium'
 
@@ -90,11 +88,15 @@ def unite_results(transcribed_result, diarized_result, labels):
         speaker = best_speaker if best_speaker else "Unknown"
         silero_vad_speakers.append((speaker, text))
         base_string_res.append(text)
+    for view_res in silero_vad_speakers:
+        print(f'Speaker: {view_res[0]} - {view_res[1]}')
     return base_string_res
 
 
 def processFile(file_name):
-    file_path = os.path.join(os.path.expanduser("~"), file_name)
+    #file_path = os.path.join(os.path.expanduser("~"), file_name)
+    # Получаем путь относительно текущей рабочей директории (где запускается скрипт)
+    file_path = os.path.join(os.getcwd(), file_name)
     transcribed_result = transcribe(file_path)
     diarized_result, labels = diarize(file_path)
     processed_results = unite_results(transcribed_result, diarized_result, labels)
@@ -102,8 +104,10 @@ def processFile(file_name):
 
 
 #answer = processFile('Desktop\Transcribe_api_v1\interview1.wav')
-#print(answer)
+answer = processFile('interview1.wav')
+print(answer)
 
+"""
 # Настройки S3 (MinIO)
 s3 = boto3.client(
     "s3",
@@ -128,3 +132,4 @@ answer = processFile(temp_file_path)
 print(answer)
 # Удаляем временный файл после обработки
 os.remove(temp_file_path)
+"""
