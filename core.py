@@ -14,7 +14,20 @@ BERT_MODEL_NAME = 'bert-base-multilingual-cased'
 TRANSCRIBE_MODEL_NAME = 'medium'
 
 from huggingface_hub import login
-login('')
+from dotenv import load_dotenv
+
+load_dotenv()
+
+load_dotenv()  # загрузит переменные из .env
+
+hf_token = os.getenv("HF_TOKEN")
+if hf_token:
+    login(hf_token)
+else:
+    raise ValueError("Hugging Face token not found in environment variables.")
+
+
+login(hf_token)
 
 tokenizer = AutoTokenizer.from_pretrained(BERT_MODEL_NAME)
 
